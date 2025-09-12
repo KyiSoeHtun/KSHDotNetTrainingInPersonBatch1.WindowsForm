@@ -1,4 +1,6 @@
-﻿using System;
+﻿using Dapper;
+using Microsoft.Data.SqlClient;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -12,18 +14,34 @@ namespace KSHDotNetTrainingInPersonBatch1.WindowsForm
 {
     public partial class FrmProduct : Form
     {
+        private string? _productId = null;
+        private readonly SqlConnectionStringBuilder sb = new SqlConnectionStringBuilder
+        {
+            DataSource = ".",
+            InitialCatalog = "InPersonBatch1MiniPOS",
+            UserID = "sa",
+            Password = "sasa@123",
+            TrustServerCertificate = true,
+
+        };
         public FrmProduct()
         {
             InitializeComponent();
+            dgvData.AutoGenerateColumns = false;
+            //colProductId.Visible = false;
         }
 
         private void btnSave_Click(object sender, EventArgs e)
         {
-         
+
             var result = CheckRequiredFields();
             if (result == false) return;
             // insert into product table
             SaveProduct();
+
+        }
+        private void SaveProduct(string code, string Name, decimal price, int qty)
+        {
 
         }
         private void SaveProduct()
@@ -36,10 +54,44 @@ namespace KSHDotNetTrainingInPersonBatch1.WindowsForm
                 ProductCode = txtCode.Text.Trim(),
                 ProductID = id,
                 ProductName = txtName.Text.Trim(),
-                Quantity = Convert.ToInt64
+                Quantity = Convert.ToInt32(txtQty.Text.Trim())
 
             };
-
+            using (IDbConnection db = new SqlConnection(sb.ConnectionString))
+            {
+                string Query = @"INSERT INTO [dbo].[Tbl_Product]
+                               ([ProductID]
+                               ,[ProductCode]
+                               ,[ProductName]
+                               ,[Price]
+                               ,[Quantity]
+                               ,[DeleteFlag])
+                         VALUES
+                               (@ProductID
+                               ,@ProductCode
+                               ,@ProductName
+                               ,@Price
+                               ,@Quantity
+                               ,@DeleteFlag
+		                       )";
+                db.Open();
+                int result = db.Execute(Query, dto);
+                string message = result > 0 ? "Product saved successfully" : "Failed to save product";
+                MessageBox.Show(message);
+                ClearControls();
+                BindData();
+            }
+        }
+        private void ClearControls()
+        {
+            txtCode.Clear();
+            txtName.Clear();
+            txtPrice.Clear();
+            txtQty.Clear();
+            btnSave.Visible = true;
+            btnUpdate.Visible = false;
+            _productId = null;
+            txtCode.Focus();
         }
         private bool CheckRequiredFields()
         {
@@ -69,6 +121,127 @@ namespace KSHDotNetTrainingInPersonBatch1.WindowsForm
                 return false;
             }
             return true;
+        }
+
+        private void FrmProduct_Load(object sender, EventArgs e)
+        {
+
+        }
+
+        private void FrmProduct_Load_1(object sender, EventArgs e)
+        {
+            BindData();
+        }
+
+        private void BindData()
+        {
+            using (IDbConnection db = new SqlConnection(sb.ConnectionString))
+            {
+                db.Open();
+                List<ProductDto> lst = db.Query<ProductDto>("select * from Tbl_Product Where DeleteFlag = 0").ToList();
+                dgvData.DataSource = lst;
+            }
+        }
+
+        private void dgvData_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        {
+            if (e.RowIndex == -1) return;
+
+            if (e.ColumnIndex == 0 && e.RowIndex >= 0) //edit action
+            {
+                string prodictId = dgvData.Rows[e.RowIndex].Cells["colProductId"].Value.ToString();
+                using (IDbConnection db = new SqlConnection(sb.ConnectionString))
+                {
+                    db.Open();
+                    string query = "select * from Tbl_Product where ProductID = @ProductID";
+                    ProductDto item = db.QueryFirstOrDefault<ProductDto>(query, new { ProductID = prodictId })!;
+                    if (item is null)
+                    {
+                        MessageBox.Show("Product not found", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        BindData();
+                        return;
+                    }
+                    _productId = prodictId;
+                    txtCode.Text = item.ProductCode;
+                    txtName.Text = item.ProductName;
+                    txtPrice.Text = item.Price.ToString();
+                    txtQty.Text = item.Quantity.ToString();
+                    btnUpdate.Visible = true;
+                    btnSave.Visible = false;
+                }
+            }
+            else if (e.ColumnIndex == 1 && e.RowIndex >= 0) //delete action
+            {
+               DialogResult dialogResult =  MessageBox.Show("Are you sure wnat to delete this record?", "Confirmation", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+                if(dialogResult == DialogResult.No) return;
+                
+                string prodictId = dgvData.Rows[e.RowIndex].Cells["colProductId"].Value.ToString();
+                using (IDbConnection db = new SqlConnection(sb.ConnectionString))
+                {
+                    db.Open();
+                    string query = "select * from Tbl_Product where ProductID = @ProductID";
+                    ProductDto item = db.QueryFirstOrDefault<ProductDto>(query, new { ProductID = prodictId })!;
+                    if (item is null)
+                    {
+                        MessageBox.Show("Product not found", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        BindData();
+                        return;
+                    }
+                    string deleteQuery = @"UPDATE [dbo].[Tbl_Product]
+                               SET [DeleteFlag] = 1
+                             WHERE ProductID = @ProductID";
+                    int result = db.Execute(deleteQuery, new { ProductID = prodictId });
+                    string message = result > 0 ? "Product deleted successfully" : "Failed to delete product";
+                    MessageBox.Show(message);
+                    ClearControls();
+                    BindData();
+
+                }
+            }
+        }
+
+        private void btnRefresh_Click(object sender, EventArgs e)
+        {
+            BindData();
+        }
+
+        private void btnCancel_Click(object sender, EventArgs e)
+        {
+            ClearControls();
+        }
+
+        private void btnUpdate_Click(object sender, EventArgs e)
+        {
+            if (string.IsNullOrEmpty(_productId))
+            {
+                MessageBox.Show("Please select a product to update", "Validation error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+            ProductDto dto = new ProductDto()
+            {
+                Price = Convert.ToDecimal(txtPrice.Text.Trim()),
+                ProductCode = txtCode.Text.Trim(),
+                ProductID = _productId,
+                ProductName = txtName.Text.Trim(),
+                Quantity = Convert.ToInt32(txtQty.Text.Trim())
+
+            };
+            using (IDbConnection db = new SqlConnection(sb.ConnectionString))
+            {
+                db.Open();
+                string query = @"UPDATE [dbo].[Tbl_Product]
+                               SET [ProductCode] = @ProductCode
+                                  ,[ProductName] = @ProductName
+                                  ,[Price] = @Price
+                                  ,[Quantity] = @Quantity
+                             WHERE ProductID = @ProductID";
+                int result = db.Execute(query, dto);
+                string message = result > 0 ? "Product updated successfully" : "Failed to updated product";
+                MessageBox.Show(message);
+                ClearControls();
+                BindData();
+            
+            }
         }
     }
 }

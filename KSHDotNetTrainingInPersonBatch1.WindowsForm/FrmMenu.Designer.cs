@@ -33,6 +33,7 @@
             saleToolStripMenuItem = new ToolStripMenuItem();
             settingToolStripMenuItem = new ToolStripMenuItem();
             exitToolStripMenuItem = new ToolStripMenuItem();
+            productToolStripMenuItem1 = new ToolStripMenuItem();
             menuStrip1.SuspendLayout();
             SuspendLayout();
             // 
@@ -42,14 +43,15 @@
             menuStrip1.Items.AddRange(new ToolStripItem[] { productToolStripMenuItem, saleToolStripMenuItem, settingToolStripMenuItem });
             menuStrip1.Location = new Point(0, 0);
             menuStrip1.Name = "menuStrip1";
-            menuStrip1.Size = new Size(1095, 40);
+            menuStrip1.Size = new Size(1095, 42);
             menuStrip1.TabIndex = 0;
             menuStrip1.Text = "menuStrip1";
             // 
             // productToolStripMenuItem
             // 
+            productToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { productToolStripMenuItem1 });
             productToolStripMenuItem.Name = "productToolStripMenuItem";
-            productToolStripMenuItem.Size = new Size(96, 36);
+            productToolStripMenuItem.Size = new Size(96, 38);
             productToolStripMenuItem.Text = "Setup";
             productToolStripMenuItem.Click += productToolStripMenuItem_Click;
             // 
@@ -72,6 +74,13 @@
             exitToolStripMenuItem.Size = new Size(359, 44);
             exitToolStripMenuItem.Text = "Exit";
             exitToolStripMenuItem.Click += exitToolStripMenuItem_Click;
+            // 
+            // productToolStripMenuItem1
+            // 
+            productToolStripMenuItem1.Name = "productToolStripMenuItem1";
+            productToolStripMenuItem1.Size = new Size(359, 44);
+            productToolStripMenuItem1.Text = "Product";
+            productToolStripMenuItem1.Click += productToolStripMenuItem1_Click;
             // 
             // FrmMenu
             // 
@@ -96,5 +105,6 @@
         private ToolStripMenuItem saleToolStripMenuItem;
         private ToolStripMenuItem settingToolStripMenuItem;
         private ToolStripMenuItem exitToolStripMenuItem;
+        private ToolStripMenuItem productToolStripMenuItem1;
     }
 }
