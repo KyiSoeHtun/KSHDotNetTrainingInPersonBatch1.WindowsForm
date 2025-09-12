@@ -39,8 +39,6 @@
             label4 = new Label();
             label1 = new Label();
             dgvData = new DataGridView();
-            btnRefresh = new Button();
-            btnUpdate = new Button();
             colEdit = new DataGridViewButtonColumn();
             colDelete = new DataGridViewButtonColumn();
             colProductId = new DataGridViewTextBoxColumn();
@@ -48,6 +46,8 @@
             colProductName = new DataGridViewTextBoxColumn();
             colPrice = new DataGridViewTextBoxColumn();
             colQuantity = new DataGridViewTextBoxColumn();
+            btnRefresh = new Button();
+            btnUpdate = new Button();
             ((System.ComponentModel.ISupportInitialize)dgvData).BeginInit();
             SuspendLayout();
             // 
@@ -81,7 +81,7 @@
             // 
             // btnCancel
             // 
-            btnCancel.Location = new Point(322, 248);
+            btnCancel.Location = new Point(358, 248);
             btnCancel.Name = "btnCancel";
             btnCancel.Size = new Size(150, 46);
             btnCancel.TabIndex = 8;
@@ -91,7 +91,7 @@
             // 
             // btnSave
             // 
-            btnSave.Location = new Point(478, 248);
+            btnSave.Location = new Point(578, 248);
             btnSave.Name = "btnSave";
             btnSave.Size = new Size(150, 46);
             btnSave.TabIndex = 9;
@@ -148,27 +148,6 @@
             dgvData.Size = new Size(1175, 628);
             dgvData.TabIndex = 10;
             dgvData.CellContentClick += dgvData_CellContentClick;
-            // 
-            // btnRefresh
-            // 
-            btnRefresh.Location = new Point(634, 248);
-            btnRefresh.Name = "btnRefresh";
-            btnRefresh.Size = new Size(150, 46);
-            btnRefresh.TabIndex = 11;
-            btnRefresh.Text = "Refresh";
-            btnRefresh.UseVisualStyleBackColor = true;
-            btnRefresh.Click += btnRefresh_Click;
-            // 
-            // btnUpdate
-            // 
-            btnUpdate.Location = new Point(478, 248);
-            btnUpdate.Name = "btnUpdate";
-            btnUpdate.Size = new Size(150, 46);
-            btnUpdate.TabIndex = 12;
-            btnUpdate.Text = "Update";
-            btnUpdate.UseVisualStyleBackColor = true;
-            btnUpdate.Visible = false;
-            btnUpdate.Click += btnUpdate_Click;
             // 
             // colEdit
             // 
@@ -234,6 +213,27 @@
             colQuantity.Name = "colQuantity";
             colQuantity.ReadOnly = true;
             colQuantity.Width = 200;
+            // 
+            // btnRefresh
+            // 
+            btnRefresh.Location = new Point(790, 248);
+            btnRefresh.Name = "btnRefresh";
+            btnRefresh.Size = new Size(150, 46);
+            btnRefresh.TabIndex = 11;
+            btnRefresh.Text = "Refresh";
+            btnRefresh.UseVisualStyleBackColor = true;
+            btnRefresh.Click += btnRefresh_Click;
+            // 
+            // btnUpdate
+            // 
+            btnUpdate.Location = new Point(578, 248);
+            btnUpdate.Name = "btnUpdate";
+            btnUpdate.Size = new Size(150, 46);
+            btnUpdate.TabIndex = 12;
+            btnUpdate.Text = "Update";
+            btnUpdate.UseVisualStyleBackColor = true;
+            btnUpdate.Visible = false;
+            btnUpdate.Click += btnUpdate_Click;
             // 
             // FrmProduct
             // 
