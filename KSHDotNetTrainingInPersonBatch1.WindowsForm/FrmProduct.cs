@@ -15,15 +15,6 @@ namespace KSHDotNetTrainingInPersonBatch1.WindowsForm
     public partial class FrmProduct : Form
     {
         private string? _productId = null;
-        private readonly SqlConnectionStringBuilder sb = new SqlConnectionStringBuilder
-        {
-            DataSource = ".",
-            InitialCatalog = "InPersonBatch1MiniPOS",
-            UserID = "sa",
-            Password = "sasa@123",
-            TrustServerCertificate = true,
-
-        };
         public FrmProduct()
         {
             InitializeComponent();
@@ -57,7 +48,7 @@ namespace KSHDotNetTrainingInPersonBatch1.WindowsForm
                 Quantity = Convert.ToInt32(txtQty.Text.Trim())
 
             };
-            using (IDbConnection db = new SqlConnection(sb.ConnectionString))
+            using (IDbConnection db = new SqlConnection(AppSetting.ConnectionStringBuilder.ConnectionString))
             {
                 string Query = @"INSERT INTO [dbo].[Tbl_Product]
                                ([ProductID]
@@ -135,7 +126,7 @@ namespace KSHDotNetTrainingInPersonBatch1.WindowsForm
 
         private void BindData()
         {
-            using (IDbConnection db = new SqlConnection(sb.ConnectionString))
+            using (IDbConnection db = new SqlConnection(AppSetting.ConnectionStringBuilder.ConnectionString))
             {
                 db.Open();
                 List<ProductDto> lst = db.Query<ProductDto>("select * from Tbl_Product Where DeleteFlag = 0").ToList();
@@ -150,7 +141,7 @@ namespace KSHDotNetTrainingInPersonBatch1.WindowsForm
             if (e.ColumnIndex == 0 && e.RowIndex >= 0) //edit action
             {
                 string prodictId = dgvData.Rows[e.RowIndex].Cells["colProductId"].Value.ToString();
-                using (IDbConnection db = new SqlConnection(sb.ConnectionString))
+                using (IDbConnection db = new SqlConnection(AppSetting.ConnectionStringBuilder.ConnectionString))
                 {
                     db.Open();
                     string query = "select * from Tbl_Product where ProductID = @ProductID";
@@ -176,7 +167,7 @@ namespace KSHDotNetTrainingInPersonBatch1.WindowsForm
                 if(dialogResult == DialogResult.No) return;
                 
                 string prodictId = dgvData.Rows[e.RowIndex].Cells["colProductId"].Value.ToString();
-                using (IDbConnection db = new SqlConnection(sb.ConnectionString))
+                using (IDbConnection db = new SqlConnection(AppSetting.ConnectionStringBuilder.ConnectionString))
                 {
                     db.Open();
                     string query = "select * from Tbl_Product where ProductID = @ProductID";
@@ -226,7 +217,7 @@ namespace KSHDotNetTrainingInPersonBatch1.WindowsForm
                 Quantity = Convert.ToInt32(txtQty.Text.Trim())
 
             };
-            using (IDbConnection db = new SqlConnection(sb.ConnectionString))
+            using (IDbConnection db = new SqlConnection(AppSetting.ConnectionStringBuilder.ConnectionString))
             {
                 db.Open();
                 string query = @"UPDATE [dbo].[Tbl_Product]

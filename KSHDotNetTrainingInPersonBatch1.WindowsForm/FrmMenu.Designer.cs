@@ -30,10 +30,10 @@
         {
             menuStrip1 = new MenuStrip();
             productToolStripMenuItem = new ToolStripMenuItem();
+            productToolStripMenuItem1 = new ToolStripMenuItem();
             saleToolStripMenuItem = new ToolStripMenuItem();
             settingToolStripMenuItem = new ToolStripMenuItem();
             exitToolStripMenuItem = new ToolStripMenuItem();
-            productToolStripMenuItem1 = new ToolStripMenuItem();
             menuStrip1.SuspendLayout();
             SuspendLayout();
             // 
@@ -55,32 +55,33 @@
             productToolStripMenuItem.Text = "Setup";
             productToolStripMenuItem.Click += productToolStripMenuItem_Click;
             // 
+            // productToolStripMenuItem1
+            // 
+            productToolStripMenuItem1.Name = "productToolStripMenuItem1";
+            productToolStripMenuItem1.Size = new Size(229, 44);
+            productToolStripMenuItem1.Text = "Product";
+            productToolStripMenuItem1.Click += productToolStripMenuItem1_Click;
+            // 
             // saleToolStripMenuItem
             // 
             saleToolStripMenuItem.Name = "saleToolStripMenuItem";
-            saleToolStripMenuItem.Size = new Size(78, 36);
+            saleToolStripMenuItem.Size = new Size(78, 38);
             saleToolStripMenuItem.Text = "Sale";
+            saleToolStripMenuItem.Click += saleToolStripMenuItem_Click;
             // 
             // settingToolStripMenuItem
             // 
             settingToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { exitToolStripMenuItem });
             settingToolStripMenuItem.Name = "settingToolStripMenuItem";
-            settingToolStripMenuItem.Size = new Size(110, 36);
+            settingToolStripMenuItem.Size = new Size(110, 38);
             settingToolStripMenuItem.Text = "Setting";
             // 
             // exitToolStripMenuItem
             // 
             exitToolStripMenuItem.Name = "exitToolStripMenuItem";
-            exitToolStripMenuItem.Size = new Size(359, 44);
+            exitToolStripMenuItem.Size = new Size(184, 44);
             exitToolStripMenuItem.Text = "Exit";
             exitToolStripMenuItem.Click += exitToolStripMenuItem_Click;
-            // 
-            // productToolStripMenuItem1
-            // 
-            productToolStripMenuItem1.Name = "productToolStripMenuItem1";
-            productToolStripMenuItem1.Size = new Size(359, 44);
-            productToolStripMenuItem1.Text = "Product";
-            productToolStripMenuItem1.Click += productToolStripMenuItem1_Click;
             // 
             // FrmMenu
             // 

@@ -37,5 +37,11 @@ namespace KSHDotNetTrainingInPersonBatch1.WindowsForm
             FrmProduct frm = new FrmProduct();
             frm.ShowDialog();
         }
+
+        private void saleToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            FrmSale frm = new FrmSale();
+            frm.ShowDialog();
+        }
     }
 }
